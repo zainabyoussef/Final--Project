@@ -3,7 +3,7 @@ session_start();
 
 $pageTitle = 'Shopping Cart';
 
-// ✅ معالجة POST قبل أي Output
+
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if(isset($_POST['update'])) {
@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['cart'] = [];
     }
 
-    // ✅ لازم قبل أي include
+   
     header('Location: cart.php');
     exit;
 }
