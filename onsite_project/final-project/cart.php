@@ -1,18 +1,31 @@
 <?php
-$pageTitle = 'Shopping Cart';
-include 'header.php';
+session_start();
 
+$pageTitle = 'Shopping Cart';
+
+// ✅ معالجة POST قبل أي Output
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     if(isset($_POST['update'])) {
         foreach($_POST['qty'] as $id => $qty) {
-            if($qty > 0) $_SESSION['cart'][$id]['qty'] = intval($qty);
-            else unset($_SESSION['cart'][$id]);
+            if($qty > 0) {
+                $_SESSION['cart'][$id]['qty'] = intval($qty);
+            } else {
+                unset($_SESSION['cart'][$id]);
+            }
         }
     }
-    if(isset($_POST['clear'])) $_SESSION['cart'] = [];
+
+    if(isset($_POST['clear'])) {
+        $_SESSION['cart'] = [];
+    }
+
+    // ✅ لازم قبل أي include
     header('Location: cart.php');
     exit;
 }
+
+include 'header.php';
 ?>
 
 <div class="container py-5">
@@ -53,7 +66,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endforeach; ?>
                     
                     <div class="d-flex justify-content-between mt-4">
-                        <a href="shop.php" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2"></i>Continue</a>
+                        <a href="shop.php" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-2"></i>Continue
+                        </a>
                         <div>
                             <button type="submit" name="update" class="btn btn-outline-primary me-2">Update</button>
                             <button type="submit" name="clear" class="btn btn-outline-danger" onclick="return confirm('Clear cart?')">Clear</button>
@@ -76,7 +91,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <hr>
                             <div class="d-flex justify-content-between mb-4">
                                 <strong>Total</strong>
-                                <strong class="price">$<?php echo number_format($total > 50 ? $total : $total + 9.99, 2); ?></strong>
+                                <strong class="price">
+                                    $<?php echo number_format($total > 50 ? $total : $total + 9.99, 2); ?>
+                                </strong>
                             </div>
                             <a href="checkout.php" class="btn btn-primary w-100 btn-lg">Checkout</a>
                         </div>
